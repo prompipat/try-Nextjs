@@ -1,5 +1,6 @@
 import Providers from "./session-provider";
 import { getServerSession } from "next-auth";
+import { authOptions } from "./api/auth/lib/auth";
 
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
@@ -25,7 +26,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
 
   return (
     <html lang="en" data-theme="halloween">
