@@ -84,13 +84,5 @@ export default function Home() {
     );
   }
 
-  return (
-    <div className="flex flex-col justify-center items-center mt-20">
-      <p className="text-xl">Welcome, {session.user?.name || "User"}!</p>
-      <p>Email: {session.user?.email}</p>
-      <button className="btn btn-neutral mt-4" onClick={() => signOut()}>
-        Log out
-      </button>
-    </div>
-  );
+  return <div className="w-full h-screen"></div>;
 }

@@ -1,4 +1,5 @@
 import Providers from "./session-provider";
+import Bar from "./components/Bar";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/lib/auth";
 
@@ -33,7 +34,9 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Providers session={session}>{children}</Providers>
+        <Providers session={session}>
+          <Bar>{children}</Bar>
+        </Providers>
       </body>
     </html>
   );
