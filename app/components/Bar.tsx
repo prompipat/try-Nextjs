@@ -2,6 +2,7 @@
 
 import { useSession, signIn, signOut } from "next-auth/react";
 import { ReactNode } from "react";
+import Link from "next/link";
 
 type Props = { children?: ReactNode };
 
@@ -36,10 +37,31 @@ export default function Bar({ children }: Props) {
             </svg>
           </label>
           <div className="w-full px-4 flex justify-between items-center">
-            {session?.user?.email}
-            <button className="btn btn-neutral" onClick={() => signOut()}>
-              Log out
-            </button>
+            <div className="font-medium">
+              {session ? session.user?.name ?? session.user?.email : "Guest"}
+            </div>
+
+            <div className="flex items-center gap-2">
+              {!session ? (
+                <>
+                  <Link className="btn btn-ghost" href="/login">
+                    Sign in
+                  </Link>
+                  <Link href="/register" className="btn btn-primary">
+                    Sign up
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <span className="mr-2 hidden sm:inline">
+                    {session.user?.name ?? session.user?.email}
+                  </span>
+                  <button className="btn btn-neutral" onClick={() => signOut()}>
+                    Log out
+                  </button>
+                </>
+              )}
+            </div>
           </div>
         </nav>
         {/* Page content here */}
@@ -57,26 +79,49 @@ export default function Bar({ children }: Props) {
           <ul className="menu w-full grow">
             {/* List item */}
             <li>
-              <button
+              <Link
+                href="/gallery"
                 className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
                 data-tip="Homepage"
               >
-                {/* Home icon */}
+                <button>
+                  {/* Home icon */}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    strokeLinejoin="round"
+                    strokeLinecap="round"
+                    strokeWidth="2"
+                    fill="none"
+                    stroke="currentColor"
+                    className="my-1.5 inline-block size-4"
+                  >
+                    <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path>
+                    <path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                  </svg>
+                  <span className="is-drawer-close:hidden">Homepage</span>
+                </button>
+              </Link>
+            </li>
+
+            <li>
+              <a
+                href="/favorites"
+                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                data-tip="Favorites"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
-                  strokeLinejoin="round"
-                  strokeLinecap="round"
-                  strokeWidth="2"
                   fill="none"
                   stroke="currentColor"
-                  className="my-1.5 inline-block size-4"
+                  strokeWidth="2"
+                  className="size-4"
                 >
-                  <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path>
-                  <path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
                 </svg>
-                <span className="is-drawer-close:hidden">Homepage</span>
-              </button>
+                <span className="is-drawer-close:hidden">Favorites</span>
+              </a>
             </li>
             {/* List item */}
             <li>
@@ -102,28 +147,6 @@ export default function Bar({ children }: Props) {
                 </svg>
                 <span className="is-drawer-close:hidden">Settings</span>
               </button>
-            </li>
-
-            <li>
-              <a
-                href="/images"
-                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                data-tip="Images"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  className="size-4"
-                >
-                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                  <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                  <polyline points="21 15 16 10 5 21"></polyline>
-                </svg>
-                <span className="is-drawer-close:hidden">Images</span>
-              </a>
             </li>
           </ul>
         </div>

@@ -44,6 +44,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   images        Image[]
+  favorites     Favorite[]
 }
 
 model Image {
@@ -56,8 +57,23 @@ model Image {
   createdAt DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  favorites Favorite[]
 
   @@index([userId])
+}
+
+model Favorite {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  imageId   String   @db.ObjectId
+  createAt  DateTime @default(now())
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  image Image @relation(fields: [imageId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, imageId])
+  @@index([userId])
+  @@index([imageId])
 }
 
 model VerificationToken {

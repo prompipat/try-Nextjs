@@ -53,9 +53,21 @@ export const authOptions: NextAuthOptions = {
   secret: authSecret!,
   session: { strategy: "jwt" },
   callbacks: {
-    async signIn({ user, account, profile }) {
-      console.log("Sign in attempt:", { user, account, profile });
-      return true;
+    async session({ session, user, token }) {
+      if (session.user) {
+        session.user.id = user?.id ?? (token as any)?.id;
+        session.user.name = user?.name ?? session.user.name;
+        session.user.email = user?.email ?? session.user.email;
+      }
+      return session;
+    },
+    async jwt({ token, user }) {
+      if (user) {
+        (token as any).id = (user as any).id;
+        (token as any).name = (user as any).name;
+        (token as any).email = (user as any).email;
+      }
+      return token;
     },
   },
 };
